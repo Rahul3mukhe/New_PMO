@@ -1,0 +1,21 @@
+{
+  "project_id": "PRJ-001",
+  "project_name": "PMO Agent Professional MVP",
+  "project_type": "Regulated",
+  "sponsor": "VP Delivery",
+  "estimated_budget": 200000,
+  "actual_budget_consumed": 135000,
+  "total_time_taken_days": 192,
+  "timeline_summary": "Planned 12 weeks; delivered in 13 weeks including UAT stabilization.",
+  "scope_summary": "Automate PMO gate checks and generate governance documents using standards.",
+  "key_deliverables": [
+    "Rule-based gate validation",
+    "Document generation and validation",
+    "Approval decision report output"
+  ],
+  "known_risks": [
+    "Delayed inputs from teams",
+    "Scope changes causing budget variance",
+    "Integration dependencies"
+  ]
+}
