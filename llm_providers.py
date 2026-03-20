@@ -6,8 +6,8 @@ from typing import Optional, Any
 # ─────────────────────────────────────────────────────────────────────────────
 # API KEYS  ←  ADD YOUR KEYS HERE
 # ─────────────────────────────────────────────────────────────────────────────
-_DEFAULT_GROQ_KEY    = os.getenv("GROQ_API_KEY")  # ← REPLACE
-  # ← ADD YOUR MISTRAL KEY (free at console.mistral.ai)
+_DEFAULT_GROQ_KEY    = os.getenv("GROQ_API_KEY", "").strip() or None
+_DEFAULT_MISTRAL_KEY = os.getenv("MISTRAL_API_KEY", "").strip() or None
 
 # Groq models to try in order before giving up on Groq
 GROQ_MODELS_FALLBACK = [
