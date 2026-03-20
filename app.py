@@ -449,6 +449,42 @@ else:
 st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
 st.markdown("<hr/>", unsafe_allow_html=True)
 
+# ── SECTION 3: API KEY ────────────────────────────────────────────────────────
+_env_groq_key = os.getenv("GROQ_API_KEY", "").strip()
+
+st.markdown("""
+<div class="fade-up-3" style="margin-bottom:8px;">
+  <div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:20px;font-weight:700;
+              color:#f0f6ff;letter-spacing:-0.01em;">Groq API Key</div>
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#7aa8cc;margin-top:4px;">
+    Required for AI document generation. Leave blank if already set as a server environment variable.
+  </div>
+</div>""", unsafe_allow_html=True)
+
+if _env_groq_key:
+    st.markdown("""
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#6ee7b7;margin-bottom:8px;">
+      ✓ GROQ_API_KEY detected from server environment.
+    </div>""", unsafe_allow_html=True)
+
+ui_api_key = st.text_input(
+    "Groq API Key",
+    type="password",
+    placeholder="gsk_... (leave blank to use server env GROQ_API_KEY)",
+    label_visibility="collapsed",
+    key="groq_api_key_input",
+    help="Get a free key at console.groq.com. If GROQ_API_KEY is set on the server, this field is optional.",
+)
+
+# UI input wins; fall back to env var; empty string means local template will be used
+resolved_api_key = ui_api_key.strip() if ui_api_key.strip() else _env_groq_key
+
+if not resolved_api_key:
+    st.warning("⚠  No Groq API key found. Documents will be generated using the local template (no LLM).")
+
+st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
+st.markdown("<hr/>", unsafe_allow_html=True)
+
 # ── RUN BUTTON ────────────────────────────────────────────────────────────────
 st.markdown("<div class='fade-up-3'>", unsafe_allow_html=True)
 run_now = st.button("▶  Run PMO Agent", type="primary")
@@ -464,7 +500,7 @@ if run_now:
     project = manual_project if manual_project else Project()
 
     state = PMOState(project=project, standards=standards, provider=PROVIDER, model=MODEL)
-    state.audit["api_key"]          = ""   # resolved from hardcoded default in llm_providers.py
+    state.audit["api_key"]          = resolved_api_key  # from UI input or GROQ_API_KEY env var
     state.audit["uploaded_docs"]    = list(uploaded_mapping.keys())
     state.audit["raw_upload_text"]  = raw_upload_text + "\n\n" + "\n\n".join(uploaded_mapping.values())
     state.audit["uploaded_mapping"] = uploaded_mapping
